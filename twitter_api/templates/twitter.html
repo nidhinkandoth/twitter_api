@@ -1,0 +1,40 @@
+<html>
+<head class="header">
+<h1>Get Tweets</h1>
+</head>
+{% load static %}
+<link rel="stylesheet" type="text/css" href={% static 'twitter_api/twitter.css'%}/>
+<body class='body'>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<form method="POST">
+ {% csrf_token %}
+  Enter user screen name 
+  <input type="text" class= 'user_name_box' id="user_name" name="amount"/>
+  <input type="button" class="convert" id="submit" value="Submit"/><br><br>
+ <div id='result' class= "boxs"> </div><br>
+</form>
+<script>
+$("#submit").click(function(){
+    console.log('test')
+    $.ajax({url: "/tweets/",
+           type:"POST",
+           data:{user_name : $('#user_name').val(),
+		},
+        success: function (html) {
+          html = JSON.parse(html)
+          console.log('success test')
+           $.each(html, function(index,value) {
+    
+              data = "<div class = 'tweet'><li>"+value.text+"</li></div><br>"
+            
+              $('#result').append(data);
+            });
+        }
+});
+});
+
+
+</script>
+</body>
+</html>
+
